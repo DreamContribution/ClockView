@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/Duke/Documents/AndroidStudioProjects/ClockView/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="d86429b0f0b3f3cafbeb78dda1b9d89119ccb05d">
+        <dex dex="/Users/Duke/Documents/AndroidStudioProjects/ClockView/app/build/intermediates/pre-dexed/debug/classes-2f120938ae8f3552bc4cc591ec2cd363e8b6e567.jar" />
+    </item>
+    <item
+        jar="/Users/Duke/Documents/AndroidStudioProjects/ClockView/app/build/intermediates/exploded-aar/com.android.support/design/23.0.1/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="e5c61a3169221a89654ffcaaed47bba51cf071ad">
+        <dex dex="/Users/Duke/Documents/AndroidStudioProjects/ClockView/app/build/intermediates/pre-dexed/debug/classes-66a5947837429f123287aef9b3679f242d14b7c4.jar" />
+    </item>
+    <item
+        jar="/Users/Duke/Documents/AndroidStudioProjects/ClockView/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.0.1/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
+        <dex dex="/Users/Duke/Documents/AndroidStudioProjects/ClockView/app/build/intermediates/pre-dexed/debug/classes-7e9052623cba28c6b852fd9898bba0762743e9b5.jar" />
+    </item>
+    <item
+        jar="/Users/Duke/Documents/AndroidStudioProjects/ClockView/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.0.1/jars/libs/internal_impl-23.0.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="aa92916125166649d8ad4ba3940c3dd7515596d3">
+        <dex dex="/Users/Duke/Documents/AndroidStudioProjects/ClockView/app/build/intermediates/pre-dexed/debug/internal_impl-23.0.1-32cdb3f6967574e14f6403e01a0f8cf2431d848f.jar" />
+    </item>
+    <item
+        jar="/Users/Duke/Library/Android/android-sdk--mac-r24-updated/extras/android/m2repository/com/android/support/support-annotations/23.0.1/support-annotations-23.0.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="1fce89a6428c51467090d7f424e4c9c3dbd55f7e">
+        <dex dex="/Users/Duke/Documents/AndroidStudioProjects/ClockView/app/build/intermediates/pre-dexed/debug/support-annotations-23.0.1-eaae2783eeb873a997d88c72ce0f742a2ac6ad5e.jar" />
+    </item>
+
+</items>

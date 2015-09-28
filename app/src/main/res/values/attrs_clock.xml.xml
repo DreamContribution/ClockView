@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="clock">
+        <attr name="width_circle" format="dimension" />
+        <attr name="width_longer" format="dimension" />
+        <attr name="width_shorter" format="dimension" />
+        <attr name="length_longer" format="dimension" />
+        <attr name="length_shorter" format="dimension" />
+        <attr name="text_size" format="dimension" />
+        <attr name="radius_center" format="dimension" />
+        <attr name="width_hour" format="dimension" />
+        <attr name="width_minutes" format="dimension" />
+        <attr name="width_second" format="dimension" />
+        <attr name="density_second" format="float" />
+        <attr name="density_minute" format="float" />
+        <attr name="density_hour" format="float" />
+    </declare-styleable>
+
+</resources>
