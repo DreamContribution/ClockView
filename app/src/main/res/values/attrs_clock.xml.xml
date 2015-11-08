@@ -14,6 +14,7 @@
         <attr name="density_second" format="float" />
         <attr name="density_minute" format="float" />
         <attr name="density_hour" format="float" />
+        <attr name="refresh_time" format="float"/>
     </declare-styleable>
 
 </resources>
