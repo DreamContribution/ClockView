@@ -166,7 +166,7 @@ public class ClockView extends View {
         //绘制秒针
         Paint paintSecond = new Paint();
         paintSecond.setAntiAlias(true);
-        paintSecond.setStrokeWidth(width_second);
+        paintSecond.setStrokeWidth(6);
         paintSecond.setColor(Color.RED);
         drawSecond(canvas, paintSecond);
 
@@ -197,7 +197,7 @@ public class ClockView extends View {
          * 如果刷新时间小于1秒，则我们的角度计算添加了毫秒
          * 如果刷新时间大于1秒，则去除了毫秒进行角度计算
          */
-        float degree = refresh_time > 1000 ? (float) (second * 360 / 60) : (float) (second * 360 / 60 + millSecond / 1000 * 360 / 60);
+        float degree = refresh_time > 1000 ? (int) (second * 360 / 60) : (float) (second * 360 / 60 + millSecond / 1000 * 360 / 60);
         canvas.rotate(degree, mWidth / 2, mHeight / 2);
         canvas.drawLine(mWidth / 2, mHeight / 2, mWidth / 2, mHeight / 2 - (mWidth / 2 - width_circle) * density_second, paint);
         canvas.rotate(-degree, mWidth / 2, mHeight / 2);
@@ -230,7 +230,7 @@ public class ClockView extends View {
             public void run() {
                 while (true) {
                     //设置更新界面的刷新时间
-                   SystemClock.sleep((long) refresh_time);
+                    SystemClock.sleep((long) refresh_time);
                     postInvalidate();
                 }
             }
