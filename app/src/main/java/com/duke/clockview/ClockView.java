@@ -98,10 +98,6 @@ public class ClockView extends View {
     }
 
 
-//    private void init() {
-//        refreshThread = new Thread();
-//    }
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -220,20 +216,11 @@ public class ClockView extends View {
 
     //绘制秒针
     private void drawSecond(Canvas canvas, Paint paint) {
-//        float degree = (float) (second * 360 / 60 + millSecond / 1000 * 360 / 60);
         /*
          * 这里对秒针的角度进行了细微处理
          * 如果刷新时间小于1秒，则我们的角度计算添加了毫秒
          * 如果刷新时间大于1秒，则去除了毫秒进行角度计算
          */
-
-//        float degree;
-//        if (refresh_time > 1000) {
-//            degree = Math.round(second * 6);
-//        } else {
-//            degree = (float) (second * 360 / 60 + millSecond / 1000 * 360 / 60);
-//        }
-
         float degree = refresh_time >= 1000 ? (int) (second * 360 / 60) : (float) (second * 360 / 60 + millSecond / 1000 * 360 / 60);
         Log.i("View", degree + ":" + second);
         canvas.rotate(degree, mWidth / 2, mHeight / 2);
