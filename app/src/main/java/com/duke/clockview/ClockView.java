@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.SystemClock;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import java.util.Calendar;
@@ -33,7 +34,7 @@ public class ClockView extends View {
 
     private float width_hour = 20;//时针宽度
     private float width_minutes = 10;//分针刻度宽度
-    private float width_second = 8;//秒针刻度宽度
+    private float width_second = 5;//秒针刻度宽度
 
 
     private float density_second = 0.85f;//秒针长度比例
@@ -46,6 +47,21 @@ public class ClockView extends View {
 
     private double millSecond, second, minute, hour;//获取当前的时间参数（毫秒，秒，分钟，小时）
 
+    /**
+     * 各种画笔
+     */
+
+    private Paint painDegree;
+    private Paint paintCircle;
+
+    private Paint paintSecond;
+
+    private Paint paintMinute;
+
+    private Paint paintHour;
+
+    private Paint paintPointer;
+
     public ClockView(Context context) {
         this(context, null, 0);
     }
@@ -56,6 +72,9 @@ public class ClockView extends View {
 
     public ClockView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        initPaints();
+
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.clock);
         /**
          * 这里所有的R.styleable.OOXX,所有的OOXX中，前面的名字必须为：styleable中name属性_属性名称
@@ -79,9 +98,9 @@ public class ClockView extends View {
     }
 
 
-    private void init() {
-        refreshThread = new Thread();
-    }
+//    private void init() {
+//        refreshThread = new Thread();
+//    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -118,18 +137,13 @@ public class ClockView extends View {
         hour = calendar.get(Calendar.HOUR);
 
         // 画外圆
-        Paint paintCircle = new Paint();
-        paintCircle.setStyle(Paint.Style.STROKE);
-        paintCircle.setAntiAlias(true);
-        paintCircle.setStrokeWidth(width_circle);
+
         canvas.drawCircle(mWidth / 2,
                 mHeight / 2, mWidth / 2 - width_circle, paintCircle);
 
 
         // 画刻度
-        Paint painDegree = new Paint();
-        painDegree.setAntiAlias(true);
-        float lineLength = 0;
+        float lineLength;
         for (int i = 0; i < 60; i++) {
             if (i % 5 == 0) {
                 painDegree.setStrokeWidth(width_longer);
@@ -164,29 +178,44 @@ public class ClockView extends View {
 
 
         //绘制秒针
-        Paint paintSecond = new Paint();
-        paintSecond.setAntiAlias(true);
-        paintSecond.setStrokeWidth(6);
-        paintSecond.setColor(Color.RED);
         drawSecond(canvas, paintSecond);
 
         //绘制分针
-        Paint paintMinute = new Paint();
-        paintMinute.setAntiAlias(true);
-        paintMinute.setStrokeWidth(width_minutes);
         drawMinute(canvas, paintMinute);
 
         //绘制时针
-        Paint paintHour = new Paint();
-        paintHour.setAntiAlias(true);
-        paintHour.setStrokeWidth(width_hour);
         drawHour(canvas, paintHour);
 
         // 画圆心
-        Paint paintPointer = new Paint();
+        canvas.drawCircle(mWidth / 2, mHeight / 2, radius_center, paintPointer);
+    }
+
+
+    private void initPaints() {
+        paintCircle = new Paint();
+        paintCircle.setStyle(Paint.Style.STROKE);
+        paintCircle.setAntiAlias(true);
+        paintCircle.setStrokeWidth(width_circle);
+
+        painDegree = new Paint();
+        painDegree.setAntiAlias(true);
+
+        paintSecond = new Paint();
+        paintSecond.setAntiAlias(true);
+        paintSecond.setStrokeWidth(width_second);
+        paintSecond.setColor(Color.RED);
+
+        paintMinute = new Paint();
+        paintMinute.setAntiAlias(true);
+        paintMinute.setStrokeWidth(width_minutes);
+
+        paintHour = new Paint();
+        paintHour.setAntiAlias(true);
+        paintHour.setStrokeWidth(width_hour);
+
+        paintPointer = new Paint();
         paintPointer.setAntiAlias(true);
         paintPointer.setStyle(Paint.Style.FILL);
-        canvas.drawCircle(mWidth / 2, mHeight / 2, radius_center, paintPointer);
     }
 
     //绘制秒针
@@ -197,7 +226,16 @@ public class ClockView extends View {
          * 如果刷新时间小于1秒，则我们的角度计算添加了毫秒
          * 如果刷新时间大于1秒，则去除了毫秒进行角度计算
          */
-        float degree = refresh_time > 1000 ? (int) (second * 360 / 60) : (float) (second * 360 / 60 + millSecond / 1000 * 360 / 60);
+
+//        float degree;
+//        if (refresh_time > 1000) {
+//            degree = Math.round(second * 6);
+//        } else {
+//            degree = (float) (second * 360 / 60 + millSecond / 1000 * 360 / 60);
+//        }
+
+        float degree = refresh_time >= 1000 ? (int) (second * 360 / 60) : (float) (second * 360 / 60 + millSecond / 1000 * 360 / 60);
+        Log.i("View", degree + ":" + second);
         canvas.rotate(degree, mWidth / 2, mHeight / 2);
         canvas.drawLine(mWidth / 2, mHeight / 2, mWidth / 2, mHeight / 2 - (mWidth / 2 - width_circle) * density_second, paint);
         canvas.rotate(-degree, mWidth / 2, mHeight / 2);
