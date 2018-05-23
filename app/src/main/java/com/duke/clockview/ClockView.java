@@ -18,10 +18,6 @@ import java.util.Date;
  */
 public class ClockView extends View {
 
-    private Thread refreshThread;//刷新时间线程
-
-    private float refresh_time = 1000;//秒针刷新的时间
-
 
     private float width_circle = 5;//表盘最外圆圈的宽度
     private float width_longer = 5;//整点刻度宽度
@@ -32,33 +28,16 @@ public class ClockView extends View {
 
     private float radius_center = 15;//表盘正中心的半径长度 radius_center
 
-    private float width_hour = 20;//时针宽度
-    private float width_minutes = 10;//分针刻度宽度
-    private float width_second = 5;//秒针刻度宽度
-
-
-    private float density_second = 0.85f;//秒针长度比例
-    private float density_minute = 0.70f;//分针长度比例
-    private float density_hour = 0.45f;//时针长度比例
-
-
     private float mWidth = 1000;//当宽为wrap_content时，默认的宽度
     private float mHeight = 1000;//当高为wrap_content时，默认的高度
 
-    private double millSecond, second, minute, hour;//获取当前的时间参数（毫秒，秒，分钟，小时）
 
     /**
      * 各种画笔
      */
-
     private Paint painDegree;
     private Paint paintCircle;
 
-    private Paint paintSecond;
-
-    private Paint paintMinute;
-
-    private Paint paintHour;
 
     private Paint paintPointer;
 
@@ -75,26 +54,26 @@ public class ClockView extends View {
 
         initPaints();
 
-        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.clock);
-        /**
-         * 这里所有的R.styleable.OOXX,所有的OOXX中，前面的名字必须为：styleable中name属性_属性名称
-         * 但是在xml中使用的时候，不能有styleable中的name属性
-         */
-        width_circle = ta.getDimension(R.styleable.clock_width_circle, 5);//表盘最外圆圈的宽度
-        width_longer = ta.getDimension(R.styleable.clock_width_longer, 5);//整点刻度宽度
-        width_shorter = ta.getDimension(R.styleable.clock_width_shorter, 3);//非整点刻度宽度
-        length_longer = ta.getDimension(R.styleable.clock_length_longer, 60);//整点刻度长度
-        length_shorter = ta.getDimension(R.styleable.clock_length_shorter, 30);//非整点刻度长度
-        text_size = ta.getDimension(R.styleable.clock_text_size, 60);//表盘中文字大小
-        radius_center = ta.getDimension(R.styleable.clock_radius_center, 15);//表盘正中心的半径长度 radius_center
-        width_hour = ta.getDimension(R.styleable.clock_width_hour, 20);//时针宽度
-        width_minutes = ta.getDimension(R.styleable.clock_density_minute, 10);//分针刻度宽度
-        width_second = ta.getDimension(R.styleable.clock_density_second, 8);//秒针刻度宽度
-        density_second = ta.getFloat(R.styleable.clock_density_second, 0.85f);//秒针长度比例
-        density_minute = ta.getFloat(R.styleable.clock_density_minute, 0.70f);//分针长度比例
-        density_hour = ta.getFloat(R.styleable.clock_density_hour, 0.45f);//时针长度比例
-        refresh_time = ta.getFloat(R.styleable.clock_refresh_time, 1000);
-        ta.recycle();
+//        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.clock);
+//        /**
+//         * 这里所有的R.styleable.OOXX,所有的OOXX中，前面的名字必须为：styleable中name属性_属性名称
+//         * 但是在xml中使用的时候，不能有styleable中的name属性
+//         */
+//        width_circle = ta.getDimension(R.styleable.clock_width_circle, 5);//表盘最外圆圈的宽度
+//        width_longer = ta.getDimension(R.styleable.clock_width_longer, 5);//整点刻度宽度
+//        width_shorter = ta.getDimension(R.styleable.clock_width_shorter, 3);//非整点刻度宽度
+//        length_longer = ta.getDimension(R.styleable.clock_length_longer, 60);//整点刻度长度
+//        length_shorter = ta.getDimension(R.styleable.clock_length_shorter, 30);//非整点刻度长度
+//        text_size = ta.getDimension(R.styleable.clock_text_size, 60);//表盘中文字大小
+//        radius_center = ta.getDimension(R.styleable.clock_radius_center, 15);//表盘正中心的半径长度 radius_center
+//        width_hour = ta.getDimension(R.styleable.clock_width_hour, 20);//时针宽度
+//        width_minutes = ta.getDimension(R.styleable.clock_density_minute, 10);//分针刻度宽度
+//        width_second = ta.getDimension(R.styleable.clock_density_second, 8);//秒针刻度宽度
+//        density_second = ta.getFloat(R.styleable.clock_density_second, 0.85f);//秒针长度比例
+//        density_minute = ta.getFloat(R.styleable.clock_density_minute, 0.70f);//分针长度比例
+//        density_hour = ta.getFloat(R.styleable.clock_density_hour, 0.45f);//时针长度比例
+//        refresh_time = ta.getFloat(R.styleable.clock_refresh_time, 1000);
+//        ta.recycle();
     }
 
 
@@ -127,13 +106,8 @@ public class ClockView extends View {
         //获取时间
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date(System.currentTimeMillis()));
-        millSecond = calendar.get(Calendar.MILLISECOND);
-        second = calendar.get(Calendar.SECOND);
-        minute = calendar.get(Calendar.MINUTE);
-        hour = calendar.get(Calendar.HOUR);
 
         // 画外圆
-
         canvas.drawCircle(mWidth / 2,
                 mHeight / 2, mWidth / 2 - width_circle, paintCircle);
 
@@ -173,15 +147,6 @@ public class ClockView extends View {
         }
 
 
-        //绘制秒针
-        drawSecond(canvas, paintSecond);
-
-        //绘制分针
-        drawMinute(canvas, paintMinute);
-
-        //绘制时针
-        drawHour(canvas, paintHour);
-
         // 画圆心
         canvas.drawCircle(mWidth / 2, mHeight / 2, radius_center, paintPointer);
     }
@@ -196,77 +161,10 @@ public class ClockView extends View {
         painDegree = new Paint();
         painDegree.setAntiAlias(true);
 
-        paintSecond = new Paint();
-        paintSecond.setAntiAlias(true);
-        paintSecond.setStrokeWidth(width_second);
-        paintSecond.setColor(Color.RED);
-
-        paintMinute = new Paint();
-        paintMinute.setAntiAlias(true);
-        paintMinute.setStrokeWidth(width_minutes);
-
-        paintHour = new Paint();
-        paintHour.setAntiAlias(true);
-        paintHour.setStrokeWidth(width_hour);
-
         paintPointer = new Paint();
         paintPointer.setAntiAlias(true);
         paintPointer.setStyle(Paint.Style.FILL);
     }
 
-    //绘制秒针
-    private void drawSecond(Canvas canvas, Paint paint) {
-        /*
-         * 这里对秒针的角度进行了细微处理
-         * 如果刷新时间小于1秒，则我们的角度计算添加了毫秒
-         * 如果刷新时间大于1秒，则去除了毫秒进行角度计算
-         */
-        float degree = refresh_time >= 1000 ? (int) (second * 360 / 60) : (float) (second * 360 / 60 + millSecond / 1000 * 360 / 60);
-        Log.i("View", degree + ":" + second);
-        canvas.rotate(degree, mWidth / 2, mHeight / 2);
-        canvas.drawLine(mWidth / 2, mHeight / 2, mWidth / 2, mHeight / 2 - (mWidth / 2 - width_circle) * density_second, paint);
-        canvas.rotate(-degree, mWidth / 2, mHeight / 2);
-    }
 
-    //绘制分针
-    private void drawMinute(Canvas canvas, Paint paint) {
-        float degree = (float) (minute * 360 / 60);
-        canvas.rotate(degree, mWidth / 2, mHeight / 2);
-        canvas.drawLine(mWidth / 2, mHeight / 2, mWidth / 2, mHeight / 2 - (mWidth / 2 - width_circle) * density_minute, paint);
-        canvas.rotate(-degree, mWidth / 2, mHeight / 2);
-    }
-
-    //绘制时针
-    private void drawHour(Canvas canvas, Paint paint) {
-        float degreeHour = (float) hour * 360 / 12;
-        float degreeMinut = (float) minute / 60 * 360 / 12;
-        float degree = degreeHour + degreeMinut;
-        canvas.rotate(degree, mWidth / 2, mHeight / 2);
-        canvas.drawLine(mWidth / 2, mHeight / 2, mWidth / 2, mHeight / 2 - (mWidth / 2 - width_circle) * density_hour, paint);
-        canvas.rotate(-degree, mWidth / 2, mHeight / 2);
-    }
-
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        //在添加到Activity的时候启动线程
-        refreshThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    //设置更新界面的刷新时间
-                    SystemClock.sleep((long) refresh_time);
-                    postInvalidate();
-                }
-            }
-        });
-        refreshThread.start();
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        //停止刷新线程
-        refreshThread.interrupt();
-    }
 }
