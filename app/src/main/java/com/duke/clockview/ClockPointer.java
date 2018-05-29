@@ -17,10 +17,13 @@ public class ClockPointer extends View {
 
     private Thread refreshThread;//刷新时间线程
 
-    private float mWidth = 1000;//当宽为wrap_content时，默认的宽度
-    private float mHeight = 1000;//当高为wrap_content时，默认的高度
+//    private float mWidth = 1000;//当宽为wrap_content时，默认的宽度
+//    private float mHeight = 1000;//当高为wrap_content时，默认的高度
 
-    private float refresh_time = 16;//秒针刷新的时间
+    private float mWidth;//当宽为wrap_content时，默认的宽度
+    private float mHeight;//当高为wrap_content时，默认的高度
+
+    private float refresh_time = 1000;//秒针刷新的时间
     private float width_hour = 20;//时针宽度
     private float width_minutes = 10;//分针刻度宽度
     private float width_second = 5;//秒针刻度宽度
@@ -29,10 +32,9 @@ public class ClockPointer extends View {
     private double millSecond, second, minute, hour;//获取当前的时间参数（毫秒，秒，分钟，小时）
 
 
-
     private float density_second = 0.85f;//秒针长度比例
-    private float density_minute = 0.70f;//分针长度比例
-    private float density_hour = 0.45f;//时针长度比例
+    private float density_minute = 0.75f;//分针长度比例
+    private float density_hour = 0.6f;//时针长度比例
 
     private Paint paintSecond;
 
@@ -90,7 +92,6 @@ public class ClockPointer extends View {
     }
 
 
-
     @Override
     protected void onDraw(Canvas canvas) {
 //        super.onDraw(canvas);
@@ -124,7 +125,6 @@ public class ClockPointer extends View {
          * 如果刷新时间大于1秒，则去除了毫秒进行角度计算
          */
         float degree = refresh_time >= 1000 ? (int) (second * 360 / 60) : (float) (second * 360 / 60 + millSecond / 1000 * 360 / 60);
-        Log.i("View", degree + ":" + second);
         canvas.rotate(degree, mWidth / 2, mHeight / 2);
         canvas.drawLine(mWidth / 2, mHeight / 2, mWidth / 2, mHeight / 2 - (mWidth / 2 - width_circle) * density_second, paint);
         canvas.rotate(-degree, mWidth / 2, mHeight / 2);
@@ -132,7 +132,7 @@ public class ClockPointer extends View {
 
     //绘制分针
     private void drawMinute(Canvas canvas, Paint paint) {
-        float degree = (float) (minute * 360 / 60);
+        float degree = (float) ((minute + second / 60) * 360 / 60);
         canvas.rotate(degree, mWidth / 2, mHeight / 2);
         canvas.drawLine(mWidth / 2, mHeight / 2, mWidth / 2, mHeight / 2 - (mWidth / 2 - width_circle) * density_minute, paint);
         canvas.rotate(-degree, mWidth / 2, mHeight / 2);
